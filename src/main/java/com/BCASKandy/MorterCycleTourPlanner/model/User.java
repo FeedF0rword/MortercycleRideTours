@@ -22,6 +22,27 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class User {
+    /**
+     * Defines the User Entity has Embedded attributes User Information, Insurance Information,
+     * Insurance Details
+     * User Has a Role defined by Enumerator object Role
+     * Defines the attributes
+     * <ul>
+     *     <li>Id <i>Auto Generated</i> <li/>
+     *     <li>role<li/>
+     *     <li>username <i>Unique</i> <li/>
+     *     <li>password<li/>
+     *     <li>passwordHash<li/>
+     *     <li>Insurance Details<li/>
+     *     <li>User Details<li/>
+     *
+     * <ul/>
+     * <p>
+     *     This Class also contain getters and setter for each of these attributes.<br>
+     *     toString method returns the all User details  as a string value
+     *
+     * <p/>
+     */
     private Long Id;
 
     private Role role;
@@ -36,7 +57,6 @@ public class User {
 
     private UserInformation userInformation = new UserInformation();
 
-    private Long version; //to keep track of updates to the user
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -102,14 +122,6 @@ public class User {
         this.userInformation = userInfo;
     }
 
-    @Version
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
 
 
     @Override
@@ -118,7 +130,6 @@ public class User {
          * Returns the user information in string form *
          */
         return "SysUser{" + "Id=" + Id
-                + ", version=" + version
                 + ", role=" + role
                 + ", userName=" + userName
                 + ", passWordHash=" + ((passWordHash == null) ? "null" : "***set but not shown***")
@@ -126,4 +137,6 @@ public class User {
                 + ", InsuranceInformation=" + insuranceInformation
                 + ", userInfo=" + userInformation + '}';
     }
+
+
 }

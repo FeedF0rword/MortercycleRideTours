@@ -2,50 +2,71 @@ package com.BCASKandy.MorterCycleTourPlanner.controller;
 
 import java.util.List;
 import com.BCASKandy.MorterCycleTourPlanner.model.User;
-import com.BCASKandy.MorterCycleTourPlanner.repository.UserRepository;
 import com.BCASKandy.MorterCycleTourPlanner.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
-    @GetMapping("/")
-    public List<User> getAllUsers(){
-        return this.userRepository.findAll();
+
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
+
+        System.out.println("Fetching User with id " + id);
+        User user = userService.retrieveUser(id,"Admin" );
+        if (user == null) {
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public User getUserByID(@PathVariable (value = "id") long userId) throws Exception {
-        return this.userRepository.findById(userId).orElseThrow(()->
-                new Exception("No User Found"));
+    @PostMapping(value="/create",headers="Accept=application/json")
+    public ResponseEntity<Void> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder){
+        System.out.println("Creating User "+user.getUserName());
+        userService.createUser(user, "Admin");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri());
+        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
-    @PostMapping
-    public User createUser(@RequestBody User user){
-        return  this.userRepository.save(user);
+    @GetMapping(value="/get", headers="Accept=application/json")
+    public List<User> getAllUser() {
+        List<User> users = userService.retrieveAllUsers("Admin");
+        return users;
+
     }
 
-//    @PutMapping("/{id}")
-//    public User updateUser(@RequestBody User user, @PathVariable (value = "id") long userId){
-//        User userOld = this.userRepository.findById(userId).orElseThrow(()->
-//                new Exception("No User Found"));
-//        userOld.setUserName(userOld.getUserName());
-//        userOld.setPassword(userOld.getPassWordHash());
-//
-//
-//    }
+    @PutMapping(value="/update", headers="Accept=application/json")
+    public ResponseEntity<String> updateUser(@RequestBody User currentUser)
+    {
+        System.out.println("sd");
+        User user = userService.retrieveUser(currentUser.getId(),"Admin");
+        if (user==null) {
+            return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+        }
+        userService.updateUser(currentUser, "Admin");
+        return new ResponseEntity<String>(HttpStatus.OK);
+    }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable (value = "id") long userId) throws Exception {
-        User userOld = this.userRepository.findById(userId).orElseThrow(() ->
-                new Exception("No User Found"));
-        this.userRepository.delete(userOld);
-        return ResponseEntity.ok().build();
+    @DeleteMapping(value="/{id}", headers ="Accept=application/json")
+    public ResponseEntity<User> deleteUser(@PathVariable("id") long id){
+        User user = userService.retrieveUser(id, "Admin");
+        if (user == null) {
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+        userService.deleteUser(id, "Admin");
+        return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+    }
+
     }
 }

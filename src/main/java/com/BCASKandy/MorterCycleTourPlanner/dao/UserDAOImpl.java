@@ -3,30 +3,41 @@ package com.BCASKandy.MorterCycleTourPlanner.dao;
 import com.BCASKandy.MorterCycleTourPlanner.controller.UserController;
 import com.BCASKandy.MorterCycleTourPlanner.model.Role;
 import com.BCASKandy.MorterCycleTourPlanner.model.User;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 public class UserDAOImpl implements UserDAO {
 
-    @Autowired
-    UserController userController;
+    private SessionFactory sessionFactory;
 
+    public void setSessionFactory(SessionFactory sf)
+    {
+        this.sessionFactory = sf;
+    }
 
     @Override
     public User create(User user) {
 
+        Session session = this.sessionFactory.getCurrentSession();
+        session.save(user);
         return null;
     }
 
     @Override
     public void delete(Long id) {
-
+        Session session = sessionFactory.getCurrentSession();
+        User user = retrieve(id);
+        session.delete(user);
     }
 
     @Override
     public User retrieve(Long id) {
-        return null;
+        Session session = sessionFactory.getCurrentSession();
+        User user = (User) session.get(User.class,id);
+        return user;
     }
 
     @Override
@@ -36,7 +47,9 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> retrieveAll() {
-        return null;
+        Session session = this.sessionFactory.getCurrentSession();
+        List<User> userList = session.createQuery("from User").list();
+        return userList;
     }
 
     @Override
@@ -46,7 +59,9 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> retrieveAll(List<Role> userRoles) {
-        return null;
+//        with aUth???
+        List <User> userList = retrieveAll();
+        return userList;
     }
 
     @Override
@@ -55,8 +70,10 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User update(User entity) {
-        return null;
+    public User update(User user) {
+        Session session = this.sessionFactory.getCurrentSession();
+        session.update(user);
+        return user;
     }
 
     @Override
