@@ -36,7 +36,7 @@ public class User {
 
     private UserInformation userInformation = new UserInformation();
 
-    private Long version;
+    private Long version; //to keep track of updates to the user
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
