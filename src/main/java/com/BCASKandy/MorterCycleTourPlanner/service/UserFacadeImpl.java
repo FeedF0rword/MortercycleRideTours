@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.naming.AuthenticationException;
 import java.util.List;
 
-public class UserService implements UserFacade{
+public class UserFacadeImpl implements UserFacade{
 
     @Autowired
     private UserDAO userDAO;

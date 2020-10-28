@@ -2,7 +2,7 @@ package com.BCASKandy.MorterCycleTourPlanner.controller;
 
 import java.util.List;
 import com.BCASKandy.MorterCycleTourPlanner.model.User;
-import com.BCASKandy.MorterCycleTourPlanner.service.UserService;
+import com.BCASKandy.MorterCycleTourPlanner.service.UserFacadeImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,14 +15,14 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping("/users")
 public class UserController {
     @Autowired
-    UserService userService;
+    UserFacadeImpl userFacadeImpl;
 
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
 
         System.out.println("Fetching User with id " + id);
-        User user = userService.retrieveUser(id,"Admin" );
+        User user = userFacadeImpl.retrieveUser(id,"Admin" );
         if (user == null) {
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
@@ -32,7 +32,7 @@ public class UserController {
     @PostMapping(value="/create",headers="Accept=application/json")
     public ResponseEntity<Void> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder){
         System.out.println("Creating User "+user.getUserName());
-        userService.createUser(user, "Admin");
+        userFacadeImpl.createUser(user, "Admin");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri());
@@ -41,7 +41,7 @@ public class UserController {
 
     @GetMapping(value="/get", headers="Accept=application/json")
     public List<User> getAllUser() {
-        List<User> users = userService.retrieveAllUsers("Admin");
+        List<User> users = userFacadeImpl.retrieveAllUsers("Admin");
         return users;
 
     }
@@ -50,21 +50,21 @@ public class UserController {
     public ResponseEntity<String> updateUser(@RequestBody User currentUser)
     {
         System.out.println("sd");
-        User user = userService.retrieveUser(currentUser.getId(),"Admin");
+        User user = userFacadeImpl.retrieveUser(currentUser.getId(),"Admin");
         if (user==null) {
             return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
         }
-        userService.updateUser(currentUser, "Admin");
+        userFacadeImpl.updateUser(currentUser, "Admin");
         return new ResponseEntity<String>(HttpStatus.OK);
     }
 
     @DeleteMapping(value="/{id}", headers ="Accept=application/json")
     public ResponseEntity<User> deleteUser(@PathVariable("id") long id){
-        User user = userService.retrieveUser(id, "Admin");
+        User user = userFacadeImpl.retrieveUser(id, "Admin");
         if (user == null) {
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
-        userService.deleteUser(id, "Admin");
+        userFacadeImpl.deleteUser(id, "Admin");
         return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
     }
 
