@@ -1,11 +1,9 @@
 package com.BCASKandy.MorterCycleTourPlanner.dao;
 
-import com.BCASKandy.MorterCycleTourPlanner.controller.UserController;
 import com.BCASKandy.MorterCycleTourPlanner.model.Role;
 import com.BCASKandy.MorterCycleTourPlanner.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
