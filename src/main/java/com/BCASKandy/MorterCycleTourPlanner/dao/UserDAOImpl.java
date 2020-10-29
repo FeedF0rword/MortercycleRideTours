@@ -21,7 +21,7 @@ public class UserDAOImpl implements UserDAO {
 
         Session session = this.sessionFactory.getCurrentSession();
         session.save(user);
-        return null;
+        return user;
     }
 
     @Override
@@ -40,6 +40,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User retrieveByUserName(String username) {
+
         return null;
     }
 
@@ -52,6 +53,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> retrieveLikeMatching(String surname, String firstname) {
+
         return null;
     }
 
