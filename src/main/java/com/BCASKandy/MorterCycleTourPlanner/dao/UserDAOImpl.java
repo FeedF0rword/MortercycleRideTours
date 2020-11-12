@@ -1,11 +1,9 @@
 package com.BCASKandy.MorterCycleTourPlanner.dao;
 
-import com.BCASKandy.MorterCycleTourPlanner.controller.UserController;
 import com.BCASKandy.MorterCycleTourPlanner.model.Role;
 import com.BCASKandy.MorterCycleTourPlanner.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -23,7 +21,7 @@ public class UserDAOImpl implements UserDAO {
 
         Session session = this.sessionFactory.getCurrentSession();
         session.save(user);
-        return null;
+        return user;
     }
 
     @Override
@@ -42,6 +40,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User retrieveByUserName(String username) {
+
         return null;
     }
 
@@ -54,6 +53,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> retrieveLikeMatching(String surname, String firstname) {
+
         return null;
     }
 

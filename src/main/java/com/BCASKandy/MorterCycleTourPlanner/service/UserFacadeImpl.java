@@ -5,7 +5,6 @@ import com.BCASKandy.MorterCycleTourPlanner.model.InsuranceInformation;
 import com.BCASKandy.MorterCycleTourPlanner.model.Role;
 import com.BCASKandy.MorterCycleTourPlanner.model.User;
 import com.BCASKandy.MorterCycleTourPlanner.model.UserInformation;
-import com.BCASKandy.MorterCycleTourPlanner.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.naming.AuthenticationException;

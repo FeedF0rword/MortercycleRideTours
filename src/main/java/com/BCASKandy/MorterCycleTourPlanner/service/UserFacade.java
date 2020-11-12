@@ -4,7 +4,6 @@ package com.BCASKandy.MorterCycleTourPlanner.service;
 import com.BCASKandy.MorterCycleTourPlanner.model.Role;
 import com.BCASKandy.MorterCycleTourPlanner.model.User;
 import com.BCASKandy.MorterCycleTourPlanner.model.UserInformation;
-import org.springframework.data.repository.Repository;
 
 import javax.naming.AuthenticationException;
 import java.util.List;
